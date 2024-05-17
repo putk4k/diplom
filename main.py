@@ -50,6 +50,10 @@ def apply_interval_partitioning(data, column, num_groups=10):
 def partition_data(data, selected_columns, numeric_column):
     if numeric_column:
         data = data.sort_values(by=numeric_column)
+    else:
+        pass
+        # TODO add another sort
+
 
     total_records = len(data)
     target_num_groups = 10
