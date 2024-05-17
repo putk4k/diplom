@@ -19,17 +19,18 @@ def label_encode_columns(data, column):
     return encoded_column
 
 def apply_dbscan(data, column):
-    try:
-        data[column] = pd.to_datetime(data[column], errors='coerce')
-    except ValueError:
+    if not (data[column].dtype in ['int64', 'float64']):
         try:
-            data[column] = pd.to_datetime(data[column], format='%Y-%m-%d', errors='coerce')
+            data[column] = pd.to_datetime(data[column], errors='coerce')
         except ValueError:
             try:
-                data[column] = pd.to_datetime(data[column], format='%d-%m-%Y', errors='coerce')
+                data[column] = pd.to_datetime(data[column], format='%Y-%m-%d', errors='coerce')
             except ValueError:
-                print(f"Не удалось преобразовать столбец '{column}' в формат даты.")
-                return
+                try:
+                    data[column] = pd.to_datetime(data[column], format='%d-%m-%Y', errors='coerce')
+                except ValueError:
+                    print(f"Не удалось преобразовать столбец '{column}' в формат даты.")
+                    return
     dbscan = DBSCAN(eps=3, min_samples=2)
     dbscan.fit(data[column].values.reshape(-1, 1))
     encoded_column = column + '_encoded'
@@ -51,8 +52,8 @@ def partition_data(data, selected_columns, numeric_column):
     if numeric_column:
         data = data.sort_values(by=numeric_column)
     else:
-        pass
-        # TODO add another sort
+        group_sizes = data.size().reset_index(name='group_size')
+        data = data.sort_values(by="group_size")
 
 
     total_records = len(data)
@@ -126,8 +127,9 @@ def main():
     num_col = []
     numeric_columns = []
 
+    num_counter = 0
     for column in final_columns:
-        if check_date_format(data[column].astype(str)):
+        if check_date_format(data[column].astype(str)) or (data[column].dtype in ['int64', 'float64'] and num_counter > 0):
             encoded_column = apply_dbscan(data, column)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
@@ -135,12 +137,13 @@ def main():
             encoded_column = label_encode_columns(data, column)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
-        elif data[column].dtype in ['int64', 'float64']:
+        elif data[column].dtype in ['int64', 'float64'] and num_counter == 0:
             numeric_columns.append(column)
             num_col.append(column);
             encoded_column = apply_interval_partitioning(data, column)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
+            num_counter += 1
 
     if not numeric_columns:
         print("Не найден числовой столбец для разбиения")
@@ -154,11 +157,11 @@ def main():
         if col + '_interval_encoded' in selected_columns:
             selected_columns.remove(col + '_interval_encoded')
 
-    groups = partition_data(data, selected_columns, numeric_columns[0] if numeric_columns else None)
+    groups = partition_data(data, selected_columns, numeric_columns[0] if numeric_columns else selected_columns[0])
 
     can_partition, total_items = evaluate_distribution(groups)
     if can_partition:
-        format_output(groups, final_columns, data, numeric_columns[0],num_col)
+        format_output(groups, final_columns, data, numeric_columns[0] if numeric_columns else selected_columns[0],num_col)
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore", message="Could not infer format")
