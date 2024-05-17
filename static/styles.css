@@ -1,98 +1,98 @@
-/* Reset styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9; /* Более приятный фон */
-    color: #333;
-    line-height: 1.6;
-    padding: 20px;
-}
-
-/* Header styles */
-header {
-    text-align: center;
-    margin-bottom: 40px; /* Увеличен отступ для лучшего разделения */
-}
-
-/* Main styles */
-main {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-/* Section styles */
-section {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px; /* Увеличен отступ для лучшего разделения */
-    width: calc(50% - 20px); /* Более удобная ширина секции */
-}
-
-/* Form styles */
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-input[type="file"] {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Button styles */
-button {
-    padding: 15px 30px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
-}
-
-/* Select dropdown styles */
-.select-dropdown {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Checkbox list styles */
-.checkbox-list {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-/* Log styles */
-pre {
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* Более приятный фон */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Header styles */
+header {
+    text-align: center;
+    margin-bottom: 40px; /* Увеличен отступ для лучшего разделения */
+}
+
+/* Main styles */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Section styles */
+section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px; /* Увеличен отступ для лучшего разделения */
+    width: calc(50% - 20px); /* Более удобная ширина секции */
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button styles */
+button {
+    padding: 15px 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* Select dropdown styles */
+.select-dropdown {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Checkbox list styles */
+.checkbox-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Log styles */
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

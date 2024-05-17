@@ -1,30 +1,33 @@
-<html>
-<head>
-    <title>DB Partitioning Tool</title>
-    <script src="/static/script.js"></script>
-</head>
-<body>
-    <h1>DB Partitioning Tool</h1>
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file">Upload CSV File:</label>
-        <input type="file" id="file" name="file" accept=".csv" required>
-        <button type="submit">Upload</button>
-    </form>
-    <hr>
-    <h2>Uploaded Files</h2>
-    <button type="button" onclick="refreshFiles()">Refresh Files</button>
-    <select id="uploadedFiles" onchange="fetchColumns()">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <div id="columns">
-        <!-- Checkbox list will be populated dynamically -->
-    </div>
-    <div id="partitionForm">
-        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">Start Partitioning</button>
-    </div>
-    <hr>
-    <h2>Processing Log</h2>
-    <pre id="log"></pre>
-</body>
-</html>
+<html>
+<head>
+    <title>DB Partitioning Tool</title>
+    <script src="/static/script.js"></script>
+</head>
+<<style type="text/css">
+
+</style>
+<body>
+    <h1>DB Partitioning Tool</h1>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file">Upload CSV File:</label>
+        <input type="file" id="file" name="file" accept=".csv" required>
+        <button type="submit">Upload</button>
+    </form>
+    <hr>
+    <h2>Uploaded Files</h2>
+    <button type="button" onclick="refreshFiles()">Refresh Files</button>
+    <select id="uploadedFiles" onchange="fetchColumns()">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <div id="columns">
+        <!-- Checkbox list will be populated dynamically -->
+    </div>
+    <div id="partitionForm">
+        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">Start Partitioning</button>
+    </div>
+    <hr>
+    <h2>Processing Log</h2>
+    <pre id="log"></pre>
+</body>
+</html>
 "
