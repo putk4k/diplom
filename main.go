@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 )
 
 type Response struct {
@@ -92,8 +93,9 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 
 func partitionHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		File    string   `json:"file"`
-		Columns []string `json:"columns"`
+		File      string   `json:"file"`
+		NumGroups int      `json:"numGroups"`
+		Columns   []string `json:"columns"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -102,7 +104,7 @@ func partitionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	filename := filepath.Join("uploads", req.File)
-	args := append([]string{"main.py", filename}, req.Columns...)
+	args := append([]string{"main.py", filename, strconv.Itoa(req.NumGroups)}, req.Columns...)
 	cmd := exec.Command("python3", args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {

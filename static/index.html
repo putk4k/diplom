@@ -1,21 +1,21 @@
 <html>
 <head>
-    <title>DB Partitioning Tool</title>
+    <title>Инструмент для анализа вохможности партицирования</title>
     <script src="/static/script.js"></script>
 </head>
 <<style type="text/css">
 
 </style>
 <body>
-    <h1>DB Partitioning Tool</h1>
+    <h1>Инструмент для анализа возможности партицирования</h1>
     <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file">Upload CSV File:</label>
+        <label for="file">Загрузить CSV файл:</label>
         <input type="file" id="file" name="file" accept=".csv" required>
-        <button type="submit">Upload</button>
+        <button type="submit">Загрузить</button>
     </form>
     <hr>
-    <h2>Uploaded Files</h2>
-    <button type="button" onclick="refreshFiles()">Refresh Files</button>
+    <h2>Выбор файла для работы</h2>
+    <button type="button" onclick="refreshFiles()">Обновить список загруженных файлов</button>
     <select id="uploadedFiles" onchange="fetchColumns()">
         <!-- Options will be populated dynamically -->
     </select>
@@ -23,11 +23,13 @@
         <!-- Checkbox list will be populated dynamically -->
     </div>
     <div id="partitionForm">
-        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">Start Partitioning</button>
+        <label for="numGroups">Введите количество желаемых партиций:</label>
+        <input type="text" id="numGroups" name="numGroups" required>
+        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">Старт программы</button>
     </div>
     <hr>
-    <h2>Processing Log</h2>
+    <h2>Вывод</h2>
     <pre id="log"></pre>
 </body>
 </html>
-"
+

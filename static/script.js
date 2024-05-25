@@ -49,16 +49,32 @@ function fetchColumns() {
 function startPartitioning() {
     const file = document.getElementById('uploadedFiles').value;
     const columns = Array.from(document.querySelectorAll('input[name="columns"]:checked')).map(el => el.value);
+    let numGroups = document.getElementById('numGroups').value.trim();
+    console.log("количество групп: ", numGroups);
+
+    if (numGroups === "") {
+      document.getElementById('log').innerText = ("Для начала работы введите необходимое количество итоговых групп")
+      return;
+    }
+    if (!(/^\d+$/.test(numGroups))) {
+      document.getElementById('log').innerText = "Необходимо ввести целое число для количества групп.";
+      return;
+    }
+    numGroups = parseInt(numGroups);
+    
+    const bb = JSON.stringify({ file, numGroups, columns});
+    console.log("json: ", bb);
 
     fetch('/partition', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ file, columns })
+        body: bb
     })
     .then(response => response.json())
     .then(data => {
+        console.log(numGroups);
         document.getElementById('log').innerText = data.log || data.message;
     })
     .catch(error => {

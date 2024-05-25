@@ -2,7 +2,6 @@ import sys
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
-from sklearn.cluster import DBSCAN
 from datetime import datetime
 import json
 import warnings
@@ -18,64 +17,39 @@ def label_encode_columns(data, column):
     print(f"Применен label encoding к столбцу '{column}', новый столбец '{encoded_column}' создан.")
     return encoded_column
 
-def apply_dbscan(data, column):
-    if not (data[column].dtype in ['int64', 'float64']):
-        try:
-            data[column] = pd.to_datetime(data[column], errors='coerce')
-        except ValueError:
-            try:
-                data[column] = pd.to_datetime(data[column], format='%Y-%m-%d', errors='coerce')
-            except ValueError:
-                try:
-                    data[column] = pd.to_datetime(data[column], format='%d-%m-%Y', errors='coerce')
-                except ValueError:
-                    print(f"Не удалось преобразовать столбец '{column}' в формат даты.")
-                    return
-    dbscan = DBSCAN(eps=3, min_samples=2)
-    dbscan.fit(data[column].values.reshape(-1, 1))
-    encoded_column = column + '_encoded'
-    data[encoded_column] = dbscan.labels_
-    print("Кластеризация с использованием алгоритма DBSCAN выполнена.")
-    return encoded_column
-
-def apply_interval_partitioning(data, column, num_groups=10):
+def apply_interval_partitioning(data, column, numgroups):
     min_val = data[column].min()
     max_val = data[column].max()
-    bins = np.linspace(min_val, max_val, num_groups + 1)
-    labels = range(num_groups)
+    bins = np.linspace(min_val, max_val, numgroups + 1)
+    labels = range(numgroups)
     interval_column = column + '_interval'
     data[interval_column] = pd.cut(data[column], bins=bins, labels=labels, include_lowest=True).astype(str)
     print(f"Равномерное разбиение числовых данных выполнено для столбца '{column}'.")
     return interval_column
 
-def partition_data(data, selected_columns, numeric_column):
+def partition_data(data, selected_columns, numeric_column,numgroups):
     if numeric_column:
         data = data.sort_values(by=numeric_column)
     else:
         group_sizes = data.size().reset_index(name='group_size')
         data = data.sort_values(by="group_size")
-
-
     total_records = len(data)
-    target_num_groups = 10
+    target_num_groups = numgroups
     target_group_size = total_records // target_num_groups
-
     groups = []
     start_idx = 0
 
     for i in range(target_num_groups):
         end_idx = start_idx + target_group_size
         if i == target_num_groups - 1:
-            end_idx = total_records  # Последняя группа включает все оставшиеся записи
+            end_idx = total_records 
         group = data.iloc[start_idx:end_idx]
         groups.append(group)
         start_idx = end_idx
 
     data['Group Number'] = 0
-
     for i, group in enumerate(groups):
         data.loc[group.index, 'Group Number'] = i + 1
-
     return groups
 
 def evaluate_distribution(groups):
@@ -118,46 +92,58 @@ def check_date_format(date_series):
         return False
 
 def main():
+    if len(sys.argv) < 2 or sys.argv[1]== "uploads":
+        print("Для начала работы необходимо выбрать файл")
+        return  
     filename = sys.argv[1]
-    selected_columns = sys.argv[2:]
+    numgroups = int(sys.argv[2])
+    if numgroups <= 0:
+        print("Некорректное значение. Введите другое количество необходимых партиций")
+    selected_columns = sys.argv[3:]
+    if not selected_columns:
+        print("Для начала работы необходимо выбрать столбцы")
+        return
+    
     data = load_data(filename)
     data = data.infer_objects()
     final_columns = selected_columns.copy()
     print("Выбранные столбцы:", selected_columns)
+    print("Количество партиций:",numgroups)
     num_col = []
     numeric_columns = []
 
     num_counter = 0
     for column in final_columns:
         if check_date_format(data[column].astype(str)) or (data[column].dtype in ['int64', 'float64'] and num_counter > 0):
-            encoded_column = apply_dbscan(data, column)
+            encoded_column = apply_interval_partitioning(data, column, numgroups)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
         elif data[column].dtype == 'object':
             encoded_column = label_encode_columns(data, column)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
-        elif data[column].dtype in ['int64', 'float64'] and num_counter == 0:
+        elif data[column].dtype in ['int64', 'float64']:
             numeric_columns.append(column)
             num_col.append(column);
-            encoded_column = apply_interval_partitioning(data, column)
+            encoded_column = apply_interval_partitioning(data, column,numgroups)
             selected_columns.remove(column)
             selected_columns.append(encoded_column)
             num_counter += 1
 
     if not numeric_columns:
-        print("Не найден числовой столбец для разбиения")
+        if selected_columns:
+            numeric_columns.append(selected_columns[0])
         # return
 
     print("\nСписок обработанных столбцов:", selected_columns)
 
-    for col in numeric_columns:
-        if col + '_interval' in selected_columns:
-            selected_columns.remove(col + '_interval')
-        if col + '_interval_encoded' in selected_columns:
-            selected_columns.remove(col + '_interval_encoded')
+    #for col in numeric_columns:
+        #if col + '_interval' in selected_columns:
+            #selected_columns.remove(col + '_interval')
+        #if col + '_interval_encoded' in selected_columns:
+            #selected_columns.remove(col + '_interval_encoded')
 
-    groups = partition_data(data, selected_columns, numeric_columns[0] if numeric_columns else selected_columns[0])
+    groups = partition_data(data, selected_columns, numeric_columns[0] if numeric_columns else selected_columns[0], numgroups)
 
     can_partition, total_items = evaluate_distribution(groups)
     if can_partition:
