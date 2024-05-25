@@ -73,7 +73,7 @@ def format_output(groups, final_columns, data, numeric_column,numeric_columns):
         keys = {}
 
         for column in final_columns:
-            if column in final_columns:
+            if column in numeric_columns:
                 min_val = group[column].min()
                 max_val = group[column].max()
                 keys[column] = (min_val, max_val)
@@ -82,7 +82,7 @@ def format_output(groups, final_columns, data, numeric_column,numeric_columns):
                 keys[column] = values
 
         formatted_keys = [f"{key}: {values}" for key, values in keys.items()]
-        print(f"Group {i + 1} ({group_size} записей, {group_percentage:.2f}%): (" + " , ".join(formatted_keys) + ")")
+        print(f"\nGroup {i + 1} ({group_size} записей, {group_percentage:.2f}%): (" + " , ".join(formatted_keys) + ")")
 
 def check_date_format(date_series):
     try:

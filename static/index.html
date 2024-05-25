@@ -1,35 +1,40 @@
 <html>
+
 <head>
     <title>Инструмент для анализа вохможности партицирования</title>
-    <script src="/static/script.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
 </head>
-<<style type="text/css">
 
-</style>
 <body>
-    <h1>Инструмент для анализа возможности партицирования</h1>
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file">Загрузить CSV файл:</label>
-        <input type="file" id="file" name="file" accept=".csv" required>
-        <button type="submit">Загрузить</button>
-    </form>
-    <hr>
-    <h2>Выбор файла для работы</h2>
-    <button type="button" onclick="refreshFiles()">Обновить список загруженных файлов</button>
+    <div class="abcac">
+        <h1>Инструмент для анализа возможности партицирования</h1>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file"><p style="line-height: 36px;">Загрузить CSV файл:</p></label>
+            <input type="file" id="file" name="file" accept=".csv" required />
+            <button type="submit">Загрузить</button>
+        </form>
+    </div>
+    <!-- <hr style="margin-top: 16px;"/> -->
+    <h2 style="margin-bottom: 16px;">Выбор файла для работы</h2>
+    <button type="button" onclick="refreshFiles()">
+        Обновить список загруженных файлов
+    </button>
     <select id="uploadedFiles" onchange="fetchColumns()">
         <!-- Options will be populated dynamically -->
     </select>
-    <div id="columns">
+    <div id="columns" class="boxesContainer">
         <!-- Checkbox list will be populated dynamically -->
     </div>
     <div id="partitionForm">
         <label for="numGroups">Введите количество желаемых партиций:</label>
-        <input type="text" id="numGroups" name="numGroups" required>
-        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">Старт программы</button>
+        <input type="text" id="numGroups" name="numGroups" required />
+        <button type="button" id="startPartitioningBtn" onclick="startPartitioning()">
+            Старт программы
+        </button>
     </div>
-    <hr>
+    <!-- <hr style="margin-top: 16px;"/> -->
     <h2>Вывод</h2>
     <pre id="log"></pre>
 </body>
+<script src="/static/script.js"></script>
 </html>
-

@@ -50,14 +50,18 @@ label {
 
 input[type="file"] {
     width: 100%;
-    padding: 15px;
+    max-width: 600px;
+    height: 36px;
+    cursor: pointer;
+    padding: 6px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 /* Button styles */
 button {
-    padding: 15px 30px;
+    padding: 0 30px 0 30px;
+    height: 36px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
@@ -72,6 +76,8 @@ button {
     background-color: #6c757d;
     color: #fff;
 }
+
+
 
 /* Select dropdown styles */
 .select-dropdown {
@@ -95,4 +101,46 @@ pre {
     padding: 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
+}
+
+.boxesContainer{
+    margin-top: 16px;
+    display: flex;
+    height: 380px;
+    width: fit-content;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex-direction: column;
+}
+
+.boxesContainer>label{
+    /* width: fit-content; */
+    max-width: 300px;
+    height: 36px;
+    background-color: #E9E9ED;
+    cursor: pointer;
+    border-radius: 6px;
+    line-height: 36px;
+    padding: 0 16px 0 16px;
+}
+
+#numGroups{
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding-left: 12px;
+    font-size: 16px;
+}
+
+#uploadForm{
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+#uploadedFiles{
+    height: 36px;
+    padding-left: 16px;
+    border: none;
+    border-radius: 6px;
 }
